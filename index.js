@@ -69,7 +69,10 @@ function exitHandler(){
         if(gl.bots.hasOwnProperty(k)){
             let bot = gl.bots[k];
             completedOutput[bot.name] = {};
-            completedOutput[bot.name].completed = bot.completed;
+            completedOutput[bot.name].completed = [];
+            for(let i = 0; i < bot.completed.length; i++){
+                completedOutput[bot.name].completed.push(bot.completed[i]);
+            }
             completedOutput[bot.name].lastTweetStamp = bot._lastTweetTimestamp;
             completedOutput[bot.name].nextTweetSchedule = (bot._nextTweetTimestamp);
             completedOutput[bot.name].cfg = (bot._cfg);

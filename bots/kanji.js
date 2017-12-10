@@ -45,10 +45,10 @@ KanjiBot.prototype._getRandomCharacter = function(){
     "use strict";
     let uncompleted = this._getUnusedCharacters();
     if(uncompleted.length == 0) this.log("UNCOMPLETED IS EMPTY!");
-    return this._kanji.table[Math.floor(Math.random() * this._kanji.table.length)];
     let selectedChar = uncompleted[Math.floor(Math.random() * uncompleted.length)];
 
     this.completed.push(selectedChar["kanji"]);
+    //this.log("Pushed " + selectedChar["kanji"] + " to completed")
 
     return selectedChar;
 };
@@ -58,10 +58,14 @@ KanjiBot.prototype._constructTweet = function(char){
     let result = "";
     result += char["kanji"];
     result += "\n";
-    result += char["kunyomi"][0];
-    result += "\n";
-    result += WKana.toRomaji(char["kunyomi"][0]);
-    result += "\n";
+
+    if(char["kunyomi"] && char["kunyomi"].length > 0){
+        result += char["kunyomi"][0];
+        result += "\n";
+        result += WKana.toRomaji(char["kunyomi"][0]);
+        result += "\n";
+    }
+
     for(let i = 0; i < char['meaning'].length; i++){
         result += char['meaning'][i];
         if(i < char['meaning'].length-1){
