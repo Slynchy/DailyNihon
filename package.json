@@ -8,21 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/username/repository.git"
+    "url": "git://github.com/Slynchy/DailyNihon.git"
   },
   "keywords": [],
   "author": "Sam Lynch",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/"
+    "url": "https://github.com/Slynchy/DailyNihon"
   },
-  "homepage": "https://github.com/",
+  "homepage": "https://github.com/Slynchy/DailyNihon",
   "private": true,
   "dependencies": {
     "twit": "^2.2.9",
     "kanjidic": "^0.1.0"
-  },
-  "runtimeArgs": [
-    "--max-old-space-size=8192"
-  ]
+  }
 }
