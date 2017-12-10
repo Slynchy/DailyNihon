@@ -2,6 +2,7 @@
 A series of Twitter bots for learning Japanese characters every day
 
 # How to use
+0. Download "wanakana.min.js" and place it in the cloned directory.
 1. Run "npm install" in the cloned directory. 
 2. Edit "botSettings.js" to have your account keys (you don't need to edit the schedules)
 3. Run "node ." inside the cloned directory.
