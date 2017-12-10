@@ -48,14 +48,28 @@ KanjiBot.prototype._getRandomCharacter = function(){
     return this._kanji.table[Math.floor(Math.random() * this._kanji.table.length)];
     let selectedChar = uncompleted[Math.floor(Math.random() * uncompleted.length)];
 
-    this.completed.push(selectedChar);
+    this.completed.push(selectedChar["kanji"]);
 
     return selectedChar;
 };
 
 KanjiBot.prototype._constructTweet = function(char){
     "use strict";
-    return char;
+    let result = "";
+    result += char["kanji"];
+    result += "\n";
+    result += char["kunyomi"][0];
+    result += "\n";
+    result += WKana.toRomaji(char["kunyomi"][0]);
+    result += "\n";
+    for(let i = 0; i < char['meaning'].length; i++){
+        result += char['meaning'][i];
+        if(i < char['meaning'].length-1){
+            result += ", ";
+        }
+    }
+
+    return result;
 };
 
 KanjiBot.prototype._getLevelKanji = function(dict){
@@ -90,9 +104,8 @@ KanjiBot.prototype.tweet = function(){
     "use strict";
     let self = this;
     let char = this._getRandomCharacter();
-    char = char["kanji"];
-
-    this.log("Tweeting \"" + char + "\" ("+ WKana.toRomaji(char) +")");
+    let output = self._constructTweet(char);
+    this.log("Tweeting \"" + output + "\"");
 
     if(gl.debugMode === true) {
         this.log("Success!");
@@ -104,7 +117,7 @@ KanjiBot.prototype.tweet = function(){
 
     self._bot.post(
         'statuses/update',
-        self._constructTweet(char),
+        output,
         function(err, data, response) {
             if(!err)
                 this.log("Success!");
