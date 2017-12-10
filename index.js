@@ -10,12 +10,17 @@ global.gl = {
     mainDict: null,
     kanjiDict: null,
     DOMParser: null,
-    bots: {},
+    bots: {
+        hiragana: null,
+        katakana: null,
+        n5kanji: null,
+        n4kanji: null,
+        n3kanji: null,
+        n2kanji: null
+    },
     completedSaveDataJson: null
 };
 
-gl.bots.katakana = null;
-gl.bots.n5kanji = null;
 function init(){
     //let twitterBot = new KatakanaBot();
     gl.completedSaveDataJson = JSON.parse(fs.readFileSync("botSettings.json", "utf8"));
@@ -46,51 +51,10 @@ function init(){
 }
 
 function loadDictionaries(){
-    let dictExists = true;//fs.existsSync("dict.json");
-    let kanjiExists = (typeof(kanjidic) !== "undefined");
-
-    if (dictExists && kanjiExists) {
-        // fs.readFile("dict.json", function(err, data){
-        //     if(err) console.log(err);
-        //
-        //     console.log("Loaded dict.json, parsing...");
-        //     gl.mainDict = JSON.parse(data);
-        //     console.log("Parsed!");
-
-            loadKanjiDict();
-
-            init();
-        //});
-    } else {
-        //loadMainDict(loadKanjiDict);
-        // never get here
-        init();
-    }
-}
-
-function loadMainDict(callback){
-    "use strict";
-    console.log("Loading dictionary XML file...");
-    fs.readFile('JMdict_e', 'utf8', function(err, data){
-        if(err) console.log(err);
-        console.log("Converting dictionary to JSON... (this takes a while!)");
-
-        //let doc = xml2js.xml2json(data, {compact: true, spaces: 4});
-        fs.writeFileSync("dict.json", doc, "utf8");
-
-        console.log("Successfully initialised dictionary 1!");
-        if(callback)
-            callback();
-    });
-}
-
-function loadKanjiDict(callback){
-    "use strict";
     console.log("Loading kanjidic json file...");
     gl.kanjiDict = kanjidic.toJSON();
-    if(callback)
-        callback();
     console.log("Loaded!");
+    init();
 }
 
 loadDictionaries();

@@ -82,8 +82,6 @@ KanjiBot.prototype.initialize = function(dictFile){
     }
 
     this._kanji.table = this._getLevelKanji(dictFile);
-
-    this._lastTweetTimestamp = (new Date()).getTime();
     setInterval(this.update, 1000 * 60 * 10);
     this.log("Initialized! Tweeting in: " + (this._lastTweetTimestamp + (1000 * 60 * 60 * 24)) + "ms or " + this._nextTweetTimestamp.toString() + "ms");
 };
