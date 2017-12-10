@@ -26,7 +26,9 @@ var KatakanaBot = function(){
 
 KatakanaBot.prototype.log = function(str){
     "use strict";
-    console.log("[KatakanaBot] " + str);
+    let output = "[KatakanaBot] " + str;
+    console.log(output);
+    gl.sessionLog += (((new Date()).getTime()).toString() + " - " + (output + '\n'));
 }
 
 KatakanaBot.prototype._getUnusedCharacters = function(){

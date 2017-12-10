@@ -20,7 +20,9 @@ var KanjiBot = function(level){
 
 KanjiBot.prototype.log = function(str){
     "use strict";
-    console.log("[KanjiBot-"+ this.level +"] " + str);
+    let output = "[KanjiBot-"+ this.level +"] " + str;
+    console.log(output);
+    gl.sessionLog += (((new Date()).getTime()).toString() + " - " + (output + '\n'));
 }
 
 KanjiBot.prototype._getUnusedCharacters = function(){
@@ -35,7 +37,9 @@ KanjiBot.prototype._getUnusedCharacters = function(){
         if(pos){
             // we found it in completed, so dont' add to the table
         } else {
-            uncompleted.push(self._kanji.table[k]);
+            if(self._kanji.table[k]["kunyomi"]) {
+                uncompleted.push(self._kanji.table[k]);
+            }
         }
     }
     return uncompleted;

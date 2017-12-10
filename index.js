@@ -18,8 +18,15 @@ global.gl = {
         n3kanji: null,
         n2kanji: null
     },
-    completedSaveDataJson: null
+    completedSaveDataJson: null,
+    sessionLog: "\n"
 };
+
+function log(str){
+    let output = "[DailyNihon] " + str;
+    console.log(output);
+    gl.sessionLog += (((new Date()).getTime()).toString() + " - " + (output + '\n'));
+}
 
 function init(){
     //let twitterBot = new KatakanaBot();
@@ -51,9 +58,9 @@ function init(){
 }
 
 function loadDictionaries(){
-    console.log("Loading kanjidic json file...");
+    log("Loading kanjidic json file...");
     gl.kanjiDict = kanjidic.toJSON();
-    console.log("Loaded!");
+    log("Loaded!");
     init();
 }
 
@@ -63,7 +70,7 @@ function exitHandler(){
     if(gl.CLOSING) return;
     gl.CLOSING = true;
 
-    console.log("\n\nSaving completed's & schedules...");
+    log("Saving completed's & schedules...");
     let completedOutput = {};
     for(let k in gl.bots){
         if(gl.bots.hasOwnProperty(k)){
@@ -80,13 +87,14 @@ function exitHandler(){
     }
     fs.writeFileSync("botSettings.json", JSON.stringify(completedOutput), "utf8");
 
-    console.log('Exiting...');
+    log('Exiting...');
+    fs.writeFileSync(((new Date()).getTime()).toString()+".txt", gl.sessionLog);
     process.exit();
 }
 
 process.on('uncaughtException', function(e) {
-    console.log('\nUncaught Exception!!\n');
-    console.log(e.stack);
+    log('\nUncaught Exception!!\n');
+    log(e.stack);
     process.exit();
 });
 process.on('exit', exitHandler.bind(null, null));

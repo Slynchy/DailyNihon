@@ -26,7 +26,9 @@ let HiraganaBot = function(){
 
 HiraganaBot.prototype.log = function(str){
     "use strict";
-    console.log("[HiraganaBot] " + str);
+    let output = "[HiraganaBot] " + str;
+    console.log(output);
+    gl.sessionLog += (((new Date()).getTime()).toString() + " - " + (output + '\n'));
 };
 
 HiraganaBot.prototype._getUnusedCharacters = function(){
