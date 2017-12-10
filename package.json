@@ -1,0 +1,28 @@
+{
+  "name": "DailyNihon",
+  "description": "A series of bots for tweeting a daily Japanese character",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/username/repository.git"
+  },
+  "keywords": [],
+  "author": "Sam Lynch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/"
+  },
+  "homepage": "https://github.com/",
+  "private": true,
+  "dependencies": {
+    "twit": "^2.2.9",
+    "kanjidic": "^0.1.0"
+  },
+  "runtimeArgs": [
+    "--max-old-space-size=8192"
+  ]
+}
