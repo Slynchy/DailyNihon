@@ -2,6 +2,7 @@ let KatakanaBot = require('./bots/katakana.js');
 let HiraganaBot = require('./bots/hiragana.js');
 let KanjiBot = require('./bots/kanji.js');
 let kanjidic = require('kanjidic');
+let B64Generator = require("./pixiB64.js");
 let fs = require('fs');
 
 global.gl = {
@@ -10,6 +11,7 @@ global.gl = {
     mainDict: null,
     kanjiDict: null,
     DOMParser: null,
+    B64Renderer: null,
     bots: {
         hiragana: null,
         katakana: null,
@@ -30,6 +32,7 @@ function log(str){
 
 function init(){
     //let twitterBot = new KatakanaBot();
+    gl.B64Renderer = new B64Generator("bg.png");
     gl.completedSaveDataJson = JSON.parse(fs.readFileSync("botSettings.json", "utf8"));
 
     gl.bots.katakana = new KatakanaBot();

@@ -22,14 +22,14 @@ var KatakanaBot = function(){
     this._cfg = null;
     this._lastTweetTimestamp = 0;
     this._nextTweetTimestamp = 0;
-}
+};
 
 KatakanaBot.prototype.log = function(str){
     "use strict";
     let output = "[KatakanaBot] " + str;
     console.log(output);
     gl.sessionLog += (((new Date()).getTime()).toString() + " - " + (output + '\n'));
-}
+};
 
 KatakanaBot.prototype._getUnusedCharacters = function(){
     "use strict";
@@ -43,7 +43,6 @@ KatakanaBot.prototype._getUnusedCharacters = function(){
             });
             if(pos){
                 // we found it in completed, so dont' add to the table
-                continue;
             } else {
                 uncompleted.push(self._katakana.table[vowel][char]);
             }
@@ -76,7 +75,9 @@ KatakanaBot.prototype._constructTweet = function(char){
 KatakanaBot.prototype.initialize = function(){
     "use strict";
     this.log("Initializing...");
-    this._bot = new TwitterBot(gl.completedSaveDataJson[this.name]['cfg']);
+    if(!gl.debugMode) {
+        this._bot = new TwitterBot(gl.completedSaveDataJson[this.name]['cfg']);
+    }
     this._cfg = gl.completedSaveDataJson[this.name]['cfg'];
     if(gl.completedSaveDataJson){
         this.completed = gl.completedSaveDataJson[this.name]['completed'];

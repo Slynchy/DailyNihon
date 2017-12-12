@@ -19,7 +19,9 @@
   "homepage": "https://github.com/Slynchy/DailyNihon",
   "private": true,
   "dependencies": {
-    "twit": "^2.2.9",
-    "kanjidic": "^0.1.0"
+    "canvas": "^1.6.7",
+    "kanjidic": "^0.1.0",
+    "node-gyp": "^3.6.2",
+    "twit": "^2.2.9"
   }
 }

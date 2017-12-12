@@ -92,7 +92,9 @@ KanjiBot.prototype.initialize = function(dictFile){
     "use strict";
     this.log("Initializing...");
     let key = this.name;
-    this._bot = new TwitterBot(gl.completedSaveDataJson[key]['cfg']);
+    if(!gl.debugMode) {
+        this._bot = new TwitterBot(gl.completedSaveDataJson[key]['cfg']);
+    }
     this._cfg = gl.completedSaveDataJson[key]['cfg'];
     if(gl.completedSaveDataJson){
         this.completed = gl.completedSaveDataJson[key]['completed'];
@@ -114,6 +116,9 @@ KanjiBot.prototype.tweet = function(){
     let char = this._getRandomCharacter();
     let output = self._constructTweet(char);
     this.log("Tweeting \"" + output + "\"");
+
+    let b64content = gl.B64Renderer.GetKanjiB64(char);
+    console.log(b64content);
 
     if(gl.debugMode === true) {
         this.log("Success!");
@@ -142,7 +147,7 @@ KanjiBot.prototype.update = function(){
     "use strict";
     this.log("Updating...");
     let currTime = (new Date()).getTime();
-    if(currTime >= this._nextTweetTimestamp){
+    if(currTime != this._nextTweetTimestamp){
         this.log("Time to tweet!");
         this.tweet();
     }

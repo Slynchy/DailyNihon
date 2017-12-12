@@ -77,8 +77,10 @@ HiraganaBot.prototype._constructTweet = function(char){
 HiraganaBot.prototype.initialize = function(){
     "use strict";
     this.log("Initializing...");
-    this._bot = new TwitterBot(gl.completedSaveDataJson[this.name]['cfg']);
-    this._cfg = gl.completedSaveDataJson[this.name]['cfg'];
+    if(!gl.debugMode) {
+        this._bot = new TwitterBot(gl.completedSaveDataJson[this.name]['cfg']);
+        this._cfg = gl.completedSaveDataJson[this.name]['cfg'];
+    }
     if(gl.completedSaveDataJson){
         this.completed = gl.completedSaveDataJson[this.name]['completed'];
         this._lastTweetTimestamp = gl.completedSaveDataJson[this.name]['lastTweetStamp'];
