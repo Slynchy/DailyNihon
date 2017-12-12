@@ -48,7 +48,10 @@ KanjiBot.prototype._getUnusedCharacters = function(){
 KanjiBot.prototype._getRandomCharacter = function(){
     "use strict";
     let uncompleted = this._getUnusedCharacters();
-    if(uncompleted.length == 0) this.log("UNCOMPLETED IS EMPTY!");
+    if(uncompleted.length == 0){
+        this.log("UNCOMPLETED IS EMPTY!");
+        this._kanji.table = uncompleted;
+    };
     let selectedChar = uncompleted[Math.floor(Math.random() * uncompleted.length)];
 
     this.completed.push(selectedChar["kanji"]);
@@ -64,9 +67,19 @@ KanjiBot.prototype._constructTweet = function(char){
     result += "\n";
 
     if(char["kunyomi"] && char["kunyomi"].length > 0){
-        result += char["kunyomi"][0];
+        for(let i = 0; i < char["kunyomi"].length; i++){
+            result += char["kunyomi"][i];
+            if(i < char['kunyomi'].length-1){
+                result += " / ";
+            }
+        }
         result += "\n";
-        result += WKana.toRomaji(char["kunyomi"][0]);
+        for(let i = 0; i < char["kunyomi"].length; i++){
+            result += WKana.toRomaji(char["kunyomi"][i]);
+            if(i < char['kunyomi'].length-1){
+                result += " / ";
+            }
+        }
         result += "\n";
     }
 
@@ -115,30 +128,30 @@ KanjiBot.prototype.tweet = function(){
     let self = this;
     let char = this._getRandomCharacter();
     let output = self._constructTweet(char);
-    this.log("Tweeting \"" + output + "\"");
-
-    let b64content = gl.B64Renderer.GetKanjiB64(char);
-    console.log(b64content);
+    self.log("Tweeting \"" + output + "\"");
 
     if(gl.debugMode === true) {
-        this.log("Success!");
+        self.log("Success!");
         self._lastTweetTimestamp = (new Date()).getTime();
         self._nextTweetTimestamp = (self._lastTweetTimestamp + (1000 * 60 * 60 * 24));
-        this.log("Next tweet scheduled for " + (self._lastTweetTimestamp + (1000 * 60 * 60 * 24)) + " in " + (1000 * 60 * 60 * 24) + "ms... ");
+        self.log("Next tweet scheduled for " + (self._lastTweetTimestamp + (1000 * 60 * 60 * 24)) + " in " + (1000 * 60 * 60 * 24) + "ms... ");
         return;
     }
 
     self._bot.post(
         'statuses/update',
-        output,
+        { status: output },
         function(err, data, response) {
             if(!err)
-                this.log("Success!");
-            else
-                this.log("Failure!");
+                self.log("Success!");
+            else {
+                self.log("Failure! " + err);
+                self.tweet();
+                return;
+            }
             self._lastTweetTimestamp = (new Date()).getTime();
             self._nextTweetTimestamp = (self._lastTweetTimestamp + (1000 * 60 * 60 * 24));
-            this.log("Next tweet scheduled for " + (self._lastTweetTimestamp + (1000 * 60 * 60 * 24)) + " in " + (1000 * 60 * 60 * 24) + "ms... ");
+            self.log("Next tweet scheduled for " + (self._lastTweetTimestamp + (1000 * 60 * 60 * 24)) + " in " + (1000 * 60 * 60 * 24) + "ms... ");
         }
     );
 };
@@ -147,7 +160,7 @@ KanjiBot.prototype.update = function(){
     "use strict";
     this.log("Updating...");
     let currTime = (new Date()).getTime();
-    if(currTime != this._nextTweetTimestamp){
+    if(currTime >= this._nextTweetTimestamp){
         this.log("Time to tweet!");
         this.tweet();
     }

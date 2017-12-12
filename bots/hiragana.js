@@ -58,6 +58,10 @@ HiraganaBot.prototype._getUnusedCharacters = function(){
 HiraganaBot.prototype._getRandomCharacter = function(){
     "use strict";
     let uncompleted = this._getUnusedCharacters();
+    if(uncompleted.length == 0){
+        this.log("UNCOMPLETED IS EMPTY!");
+        this._kanji.table = uncompleted;
+    };
     let selectedChar = uncompleted[Math.floor(Math.random() * uncompleted.length)];
 
     this.completed.push(selectedChar);
@@ -111,12 +115,12 @@ HiraganaBot.prototype.tweet = function(){
 
     self._bot.post(
         'statuses/update',
-        self._constructTweet(char),
+        { status: self._constructTweet(char) },
         function(err, data, response) {
-            if(err)
+            if(!err)
                 self.log("Success!");
             else
-                self.log("Failure!");
+                self.log("Failure! " + err);
             self._lastTweetTimestamp = (new Date()).getTime();
             self._nextTweetTimestamp = (self._lastTweetTimestamp + (1000 * 60 * 60 * 24));
             self.log("Next tweet scheduled for " + (self._lastTweetTimestamp + (1000 * 60 * 60 * 24)) + " in " + (1000 * 60 * 60 * 24) + "ms... ");
